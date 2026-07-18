@@ -1,8 +1,9 @@
+print("Start")
 import pandas as pd 
 import matplotlib.pyplot as plt
 import seaborn as sns 
 
-df = pd.read_csv('data.csv')
+df = pd.read_csv('data/data.csv')
 # print(df.info())
 
 #DATA CLEANING
@@ -57,30 +58,31 @@ else:
     
     
 # # QUESTION 5 : DO RERA APPROVED PROPERTIES COMMAND A PRICE PREMIUM?
-# rera_approved_avg_price = df[df['rera_approval'] == True]['price'].mean()
-# rera_not_approved_avg_price = df[df['rera_approval'] == False]['price'].mean()
+rera_approved_avg_price = df[df['rera_approval'] == True]['price'].mean()
+rera_not_approved_avg_price = df[df['rera_approval'] == False]['price'].mean()
 
-# if rera_approved_avg_price > rera_not_approved_avg_price:
-#     print(f"Yes, RERA approved properties command a price premium. The average price of RERA approved properties is {rera_approved_avg_price/10000000:.2f} Crores, while the average price of non-RERA approved properties is {rera_not_approved_avg_price/10000000:.2f} Crores.")  
+if rera_approved_avg_price > rera_not_approved_avg_price:
+    print(f"Yes, RERA approved properties command a price premium. The average price of RERA approved properties is {rera_approved_avg_price/10000000:.2f} Crores, while the average price of non-RERA approved properties is {rera_not_approved_avg_price/10000000:.2f} Crores.")  
     
-# else:
-#     print(f"No, non-RERA approved properties command a price premium. The average price of non-RERA approved properties is {rera_not_approved_avg_price/10000000:.2f} Crores, while the average price of RERA approved properties is {rera_approved_avg_price/10000000:.2f} Crores.")
+else:
+    print(f"No, non-RERA approved properties command a price premium. The average price of non-RERA approved properties is {rera_not_approved_avg_price/10000000:.2f} Crores, while the average price of RERA approved properties is {rera_approved_avg_price/10000000:.2f} Crores.")
     
     
 # #QUESTION 6 : HOW DOES AREA IMPACT PRICE AND RATE PER SQUARE FOOT?
-# plt.figure(figsize=(12, 6))
-# plt.subplot(1, 2, 1)                
-# plt.scatter(df['area'], df['price'])
-# plt.xlabel('Area (sqft)')
-# plt.ylabel('Price (Crores)')
-# plt.title('Impact of Area on Price')    
-# plt.subplot(1, 2, 2)
-# plt.scatter(df['area'], df['rate_per_sqft'])        
-# plt.xlabel('Area (sqft)')       
-# plt.ylabel('Rate per sqft (Rs/sqft)')
-# plt.title('Impact of Area on Rate per sqft')
-# plt.tight_layout()  
-# plt.show()
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)                
+plt.scatter(df['area'], df['price'])
+plt.xlabel('Area (sqft)')
+plt.ylabel('Price (Crores)')
+plt.title('Impact of Area on Price')    
+plt.subplot(1, 2, 2)
+plt.scatter(df['area'], df['rate_per_sqft'])        
+plt.xlabel('Area (sqft)')       
+plt.ylabel('Rate per sqft (Rs/sqft)')
+plt.title('Impact of Area on Rate per sqft')
+plt.tight_layout()  
+plt.savefig("images/area_analysis.png", dpi=300, bbox_inches="tight")
+plt.show()
 
 
 #QUESTION 7 : WHICH BHK CONFIGURATION IS MOST EXPENSIVE?
@@ -99,8 +101,15 @@ builder_price = df.groupby('company_name')['rate_per_sqft'].mean().sort_values(a
 print(builder_price)
 
 # QUESTION 10 : ARE LARGER HOMES MORE EXPESIVE PER SQFT?
-sns.scatterplot(data=df,x = 'area', y = 'rate_per_sqft')
-# plt.show()
+sns.scatterplot(data=df, x='area', y='rate_per_sqft')
+
+plt.title("Area vs Rate per Sqft")
+plt.xlabel("Area (sqft)")
+plt.ylabel("Rate per Sqft")
+
+plt.savefig("images/area_vs_rate_per_sqft.png", dpi=300, bbox_inches="tight")
+
+plt.show()
 
 # QUESTION 11 :Which locality offers the best value for money?
 
