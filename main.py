@@ -1,4 +1,8 @@
-print("Start")
+print("="*60)
+print("GURGAON REAL ESTATE ANALYSIS")
+print("="*60)
+
+
 import pandas as pd 
 import matplotlib.pyplot as plt
 import seaborn as sns 
@@ -15,12 +19,16 @@ df= df.drop_duplicates()
 
 df['price'] = df['price'].astype(str).str.replace(',', '').astype(float)
 # print(df['price'])
+print()
 
 df['area'] = df['area'].astype(str).str.replace(',', '').astype(int)
 # print(df['area'])
+print()
 
 df['rate_per_sqft'] = df['rate_per_sqft'].astype(str).str.replace(',', '').astype(float)
 # print(df['rate_per_sqft'])
+print()
+
 
 # CATEGORICAL COLUMNS CLEANING
 df['status'] = df['status'].str.strip().str.lower()
@@ -31,21 +39,22 @@ df = df.drop_duplicates()
 
 # QUESTION 1:WHICH IS THE COSTLIEST FLAT IN THE DAT SET?
 costliest_flat = df.loc[df['price'].idxmax()]
-
 print(f" the costliest flat is a {costliest_flat['bhk_count']} BHK {costliest_flat['flat_type']} located in {costliest_flat['locality']}, built by {costliest_flat['builder_name']}. It is currently {costliest_flat['status']} and has an area of {costliest_flat['area']} sqft, priced at {costliest_flat['price']/10000000:.2f} Crores. The rate per sqft is {costliest_flat['rate_per_sqft']}. RERA approval status: {'Approved' if costliest_flat['rera_approval'] else 'Not Approved'}.")
+print()
+
 
 # QUESTION 2 : WHICH LOCALITY HAS THE HIGHEST AVERAGE PRICE ?
 highest_avg_price_locality = df.groupby('locality')['price'].mean().idxmax()
 avg_price = df.groupby('locality')['price'].mean().max()
-
 print(f"The locality with the highest average price is {highest_avg_price_locality} and the average price in {highest_avg_price_locality} is {avg_price/10000000:.2f} Crores.")
+print()
 
 # QUESTION 3:  WHICH LOCALITY HAS THE HIGHEST  RATE PER SQUARE FOOT ?
 highest_avg_rate_locality = df.groupby('locality')['rate_per_sqft'].mean().idxmax()
 avg_rate = df.groupby('locality')['rate_per_sqft'].mean().max()
 
 print(f"The locality with the highest average rate per sqft is {highest_avg_rate_locality} and the average rate in {highest_avg_rate_locality} is {avg_rate:.2f} Rs/sqft.")
-
+print()
 
 # QUESTION 4 : DO READY TO MOVE PROPERTY COST MORE THAN UNDER CONSTRUCTION PROPERTIES?
 ready_to_move_avg_price = df[df['status'] == 'ready to move']['price'].mean()
@@ -56,7 +65,8 @@ if ready_to_move_avg_price > under_construction_avg_price:
 else:
     print(f"No, under construction properties cost more than ready to move properties. The average price of under construction properties is {under_construction_avg_price/10000000:.2f} Crores, while the average price of ready to move properties is {ready_to_move_avg_price/10000000:.2f} Crores.")
     
-    
+print()
+ 
 # # QUESTION 5 : DO RERA APPROVED PROPERTIES COMMAND A PRICE PREMIUM?
 rera_approved_avg_price = df[df['rera_approval'] == True]['price'].mean()
 rera_not_approved_avg_price = df[df['rera_approval'] == False]['price'].mean()
@@ -67,6 +77,7 @@ if rera_approved_avg_price > rera_not_approved_avg_price:
 else:
     print(f"No, non-RERA approved properties command a price premium. The average price of non-RERA approved properties is {rera_not_approved_avg_price/10000000:.2f} Crores, while the average price of RERA approved properties is {rera_approved_avg_price/10000000:.2f} Crores.")
     
+print()
     
 # #QUESTION 6 : HOW DOES AREA IMPACT PRICE AND RATE PER SQUARE FOOT?
 plt.figure(figsize=(12, 6))
@@ -88,17 +99,19 @@ plt.show()
 #QUESTION 7 : WHICH BHK CONFIGURATION IS MOST EXPENSIVE?
 most_expensive_bhk = df.groupby('bhk_count')['rate_per_sqft'].mean().idxmax()
 print(f" the most expensive bhk configuration on average is {most_expensive_bhk}BHK")
-
+print()
 
 # QUESTION 8 : WHICH PROPERTY TYPE IS COSTLIEST?
 most_expensive_property_type = df.groupby('flat_type')['rate_per_sqft'].mean().idxmax()
 print(f"the most expensive property type is {most_expensive_property_type}")
-
+print()
 
 
 #QUESTION 9 : DO CERTAIN BUILDERS PRICE HIGHER?
 builder_price = df.groupby('company_name')['rate_per_sqft'].mean().sort_values(ascending=False).head(5)
+print("\nTop 5 Premium Builders\n")
 print(builder_price)
+print()
 
 # QUESTION 10 : ARE LARGER HOMES MORE EXPESIVE PER SQFT?
 sns.scatterplot(data=df, x='area', y='rate_per_sqft')
@@ -106,35 +119,33 @@ sns.scatterplot(data=df, x='area', y='rate_per_sqft')
 plt.title("Area vs Rate per Sqft")
 plt.xlabel("Area (sqft)")
 plt.ylabel("Rate per Sqft")
-
 plt.savefig("images/area_vs_rate_per_sqft.png", dpi=300, bbox_inches="tight")
-
 plt.show()
 
 # QUESTION 11 :Which locality offers the best value for money?
-
 value = df.groupby('locality')['rate_per_sqft'].mean().sort_values(ascending=False).head(10)
-
+print("\nTop 10 Value Localities\n")
 print(value)
+print()
 
 #question 12 : WHICH SECTOR IS BEST FOR THE FIRST-TIME  HOME BUYER?
 first_time = df.groupby('locality')['price'].mean().sort_values().head(10)
-
+print("\nBest Localities For First Time Buyers\n")
 print(first_time)
+print()
 
 #QUESTION 13 : WHICH SECTOR IS BEST FOR THE LUXURY PROPERTY INVESTMENT ? 
 luxury = df.groupby('locality')['price'].mean().sort_values(ascending=False).head(10)
-
+print("\nTop Luxury Localities\n")
 print(luxury)
+print()
 
 #QUESTION 14 : WHICH BUILDER PROVIDES THE BEST VALUE FOR MONEY ?
-
 builder_value = df.groupby('company_name')['rate_per_sqft'].mean().sort_values().head(10)
-
 print(builder_value)
+print()
 
 # QUESTION 15 : Which sector should an investor choose?   Create a score based on:Lower average price Higher availability  Lower rate per sqft
-
 investment = df.groupby('locality').agg({
     'price':'mean',
     'rate_per_sqft':'mean'
@@ -146,9 +157,10 @@ investment = investment.sort_values(
 )
 
 print(investment.head(10))
+print()
 
 #===========================================
-# QUESTION 16 : SALARY BASED PROPERTY RECOMMENDATION SYSTEM
+# SALARY BASED PROPERTY RECOMMENDATION SYSTEM
 
 salary = int(input("\nEnter Your Monthly Salary (₹): "))
 
@@ -168,10 +180,12 @@ recommend_rate = recommend.groupby('locality')['rate_per_sqft'].mean().sort_valu
 
 print("\nAverage Rate Per Sqft\n")
 print(recommend_rate)
+print()
 
 print("\nPurpose")
 print("1. Self Living")
 print("2. Investment")
+print()
 
 choice = int(input("Enter Choice : "))
 
@@ -190,3 +204,5 @@ elif choice == 2:
 
     print("\nBest Localities For Investment\n")
     print(result)
+    
+    
