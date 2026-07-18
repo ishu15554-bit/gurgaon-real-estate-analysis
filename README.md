@@ -67,6 +67,16 @@ The project answers real-world business questions and provides data-driven recom
 - Best investment localities
 - Salary-Based Property Recommendation System
 ---
+
+## 📌 Key Insights
+
+- Ready-to-move properties generally have higher prices.
+- Premium localities have higher average property prices.
+- Property area does not always increase the rate per square foot.
+- Luxury properties are concentrated in specific localities.
+- RERA approval can influence pricing.
+
+  
 ## Salary-Based Property Recommendation System
 
 One of the unique features of this project is a recommendation system.
